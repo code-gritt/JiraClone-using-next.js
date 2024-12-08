@@ -21,11 +21,11 @@ import {
 } from "@/components/ui/form";
 
 const FormSchema = z.object({
-  email: z
+  email: z.string().email(),
+  password: z
     .string()
-    .min(1, { message: "This field has to be filled." })
-    .email("This is not a valid email."),
-  password: z.string(),
+    .min(8, "The password must be at least 8 characters long")
+    .max(32, "The password must be a maximun 32 characters"),
 });
 
 const SignInCard = () => {
@@ -36,6 +36,10 @@ const SignInCard = () => {
       password: "",
     },
   });
+
+  const submit = (values: z.infer<typeof FormSchema>) => {
+    console.log(values);
+  };
   return (
     <>
       <Card className="w-full h-full md:w-[487px] border-none shadow-lg">
@@ -47,27 +51,40 @@ const SignInCard = () => {
         </div>
         <CardContent className="p-7">
           <Form {...form}>
-            <form className="space-y-4">
-              <Input
-                className=""
-                required
-                type="email"
-                placeholder="Enter your Email"
-                value={""}
-                onChange={() => {}}
-                disabled={false}
+            <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your Email"
+                        type="email"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
-              <Input
-                className=""
-                required
-                type="password"
-                placeholder="Enter Password"
-                value={""}
-                onChange={() => {}}
-                disabled={false}
-                min={8}
-                max={256}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter Password"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
               />
+
               <Button className="w-full" disabled={false} size="lg">
                 Login
               </Button>

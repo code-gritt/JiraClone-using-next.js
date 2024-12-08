@@ -2,6 +2,7 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 interface AuthLayoutProps {
@@ -17,7 +18,10 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
             <Image src="/logo/jiralogo.png" alt="Logo" width={50} height={50} />
             <h2 className="text-2xl font-bold">Project Jira</h2>
           </div>
-          <Button variant="secondary">Sign Up</Button>
+          <Link href="/sign-up">
+            {" "}
+            <Button variant="secondary">Sign Up</Button>
+          </Link>
         </nav>
         <div className="flex flex-col pt-4 md:pt-14 justify-center items-center">
           {children}

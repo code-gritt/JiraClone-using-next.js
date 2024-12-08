@@ -13,8 +13,45 @@ import { Separator } from "@/components/ui/separator";
 import React from "react";
 import { FcGoogle } from "react-icons/fc";
 import { FaGithub } from "react-icons/fa";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const FormSchema = z.object({
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(50, "Name must not exceed 50 characters")
+    .regex(/^[A-Za-z\s]+$/, "Name can only contain letters and spaces."),
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8, "The password must be at least 8 characters long")
+    .max(32, "The password must be a maximun 32 characters"),
+});
 
 const SignUpCard = () => {
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+  });
+
+  const submit = (values: z.infer<typeof FormSchema>) => {
+    console.log(values);
+  };
   return (
     <>
       <Card className="w-full h-full md:w-[487px] border-none shadow-lg">
@@ -22,7 +59,7 @@ const SignUpCard = () => {
           <CardTitle className="text-2xl">Sign Up</CardTitle>
           <CardDescription className="max-w-[400px] mx-auto">
             By signing up you agree to our{" "}
-            <span className="text-blue-500">Terms of Service and {""}</span>
+            <span className="text-blue-500">Terms of Service {""}</span>
             and
             <span className="text-blue-500">{""} Privacy Policy</span>.
           </CardDescription>
@@ -31,40 +68,61 @@ const SignUpCard = () => {
           <Separator />
         </div>
         <CardContent className="p-7">
-          <form className="space-y-4">
-            <Input
-              className=""
-              required
-              type="text"
-              placeholder="Enter your Name"
-              value={""}
-              onChange={() => {}}
-              disabled={false}
-            />
-            <Input
-              className=""
-              required
-              type="email"
-              placeholder="Enter your Email"
-              value={""}
-              onChange={() => {}}
-              disabled={false}
-            />
-            <Input
-              className=""
-              required
-              type="password"
-              placeholder="Enter Password"
-              value={""}
-              onChange={() => {}}
-              disabled={false}
-              min={8}
-              max={256}
-            />
-            <Button className="w-full" disabled={false} size="lg">
-              Login
-            </Button>
-          </form>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(submit)} className="space-y-4">
+              <FormField
+                name="name"
+                control={form.control}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your Name"
+                        type="text"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter your Email"
+                        type="email"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="Enter Password"
+                        type="password"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button className="w-full" disabled={false} size="lg">
+                Login
+              </Button>
+            </form>
+          </Form>
         </CardContent>
 
         <div className="px-7">
@@ -94,5 +152,4 @@ const SignUpCard = () => {
     </>
   );
 };
-
 export default SignUpCard;
