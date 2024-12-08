@@ -26,6 +26,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Loader from "@/components/Loader";
+import Link from "next/link";
 
 const FormSchema = z.object({
   name: z
@@ -162,6 +163,17 @@ const SignUpCard = () => {
                 <FaGithub className="mr-2 size-5" />
                 Login with Github
               </Button>
+            </CardContent>
+            <div className="px-7">
+              <Separator />
+            </div>
+            <CardContent className="p-7 flex items-center justify-center">
+              <p>
+                Already have an account?
+                <Link href="/sign-in" className="text-blue-500 hover:underline">
+                  {""} Sign In
+                </Link>
+              </p>
             </CardContent>
           </Card>
         )}

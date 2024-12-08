@@ -20,6 +20,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import Loader from "@/components/Loader";
+import Link from "next/link";
 
 const FormSchema = z.object({
   email: z.string().email(),
@@ -130,6 +131,17 @@ const SignInCard = () => {
                 <FaGithub className="mr-2 size-5" />
                 Login with Github
               </Button>
+            </CardContent>
+            <div className="px-7">
+              <Separator />
+            </div>
+            <CardContent className="p-7 flex items-center justify-center">
+              <p>
+                Don't have an account?
+                <Link href="/sign-up" className="text-blue-500 hover:underline">
+                  {""} Sign Up
+                </Link>
+              </p>
             </CardContent>
           </Card>
         )}

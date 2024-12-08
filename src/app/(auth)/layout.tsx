@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import React from "react";
 
 interface AuthLayoutProps {
@@ -10,6 +11,8 @@ interface AuthLayoutProps {
 }
 
 const AuthLayout = ({ children }: AuthLayoutProps) => {
+  const pathname = usePathname();
+  const isSignIn = pathname === "/sign-in";
   return (
     <main className="bg-neutral-100 min-h-screen ">
       <div className="mx-auto max-w-screen-xl p-4">
@@ -20,7 +23,11 @@ const AuthLayout = ({ children }: AuthLayoutProps) => {
           </div>
           <Link href="/sign-up">
             {" "}
-            <Button variant="secondary">Sign Up</Button>
+            <Button asChild variant="secondary">
+              <Link href={isSignIn ? "/sign-up" : "/sign-in"}>
+                {isSignIn ? "Sign Up" : "Sign In"}
+              </Link>
+            </Button>
           </Link>
         </nav>
         <div className="flex flex-col pt-4 md:pt-14 justify-center items-center">
